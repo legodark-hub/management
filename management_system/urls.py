@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/', include('teams.urls')),
     path('api/', include('tasks.urls')),
     path('api/', include('scheduler.urls')),
+    path('api/', include('motivation.urls')),
 ]
