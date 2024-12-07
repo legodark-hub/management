@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 
 from scheduler.models import SchedulerEvent
-from scheduler.serializer import SchedulerEventSerializer
+from scheduler.serializers import SchedulerEventSerializer
 
 
 # Create your views here.
