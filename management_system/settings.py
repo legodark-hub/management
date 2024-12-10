@@ -130,9 +130,11 @@ REST_FRAMEWORK = {
     ],
 }
 
-DJOSER = {
-    # "USER_CREATE_PASSWORD_RETYPE": True,
+SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+}
+
+DJOSER = {
     "LOGIN_FIELD": "username",
     "SERIALIZERS": {
         "user_create": "users.serializers.CustomUserCreateSerializer",
