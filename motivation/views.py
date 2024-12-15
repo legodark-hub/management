@@ -6,7 +6,6 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-# Create your views here.
 class TaskEvaluationViewSet(viewsets.ModelViewSet):
     queryset = TaskEvaluation.objects.all()
     serializer_class = TaskEvaluationSerializer
@@ -17,6 +16,12 @@ class TaskEvaluationViewSet(viewsets.ModelViewSet):
         if task.created_by != self.request.user:
             raise PermissionDenied("Вы не можете оценить данную задачу")
         serializer.save(evaluator=self.request.user)
+        
+    def perform_update(self, serializer):
+        evaluation = self.get_object()
+        if evaluation.evaluator != self.request.user:
+            raise PermissionDenied("Вы не можете редактировать данную оценку")
+        serializer.save()
         
     def get_queryset(self):
         return TaskEvaluation.objects.filter(evaluator=self.request.user)
