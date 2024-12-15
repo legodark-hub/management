@@ -10,7 +10,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
     class Meta(UserCreateSerializer.Meta):
         model = CustomUser
-        fields = ["id", "username", "email", "password", "role", "invitation_code"]
+        fields = ["id", "username", "email", "password", "invitation_code"]
 
     def validate_invitation_code(self, value):
         print(f"VALIDATION {value}")
@@ -34,3 +34,13 @@ class CustomUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = CustomUser
         fields = ("id", "username", "email", "role", "team")
+        
+class RoleChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["role"]
+        
+    def validate_role(self, value):
+        if value not in ["manager", "employee"]:
+            raise serializers.ValidationError("Неправильная роль")
+        return value
