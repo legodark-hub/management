@@ -24,7 +24,11 @@ class TaskEvaluationViewSet(viewsets.ModelViewSet):
         serializer.save()
         
     def get_queryset(self):
-        return TaskEvaluation.objects.filter(evaluator=self.request.user)
+        if self.request.user.role == "manager":
+            return TaskEvaluation.objects.filter(evaluator=self.request.user)
+        if self.request.user.role == "employee":
+            return TaskEvaluation.objects.filter(task__assigned_to=self.request.user)
+        return TaskEvaluation.objects.none()
 
     @action(detail=False, methods=["get"], url_path="average-score")
     def average_score(self, request):
