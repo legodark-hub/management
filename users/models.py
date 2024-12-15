@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):
     role = models.CharField(
         max_length=50,
         choices=[("admin", "Admin"), ("manager", "Manager"), ("employee", "Employee")],
+        default="employee",
     )
     team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name="members")
     
