@@ -15,6 +15,8 @@ class TeamViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
+        if self.request.user.role != "manager":
+            raise PermissionDenied("Вы не являетесь менеджером")
         serializer.save(admin=self.request.user)
 
     def get_queryset(self):
