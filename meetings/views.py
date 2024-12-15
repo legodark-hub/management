@@ -15,7 +15,7 @@ class MeetingViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("Вы не являетесь менеджером")
         participants = serializer.validated_data.get("participants")
         for participant in participants:
-            if participant.team != self.request.user.team:
+            if participant.team.admin != self.request.user:
                 raise PermissionDenied(
                     "Вы не можете назначить данную встречу участнику другой команды"
                 )
