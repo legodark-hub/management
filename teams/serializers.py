@@ -15,6 +15,10 @@ class AddUserToTeamSerializer(serializers.Serializer):
     email = serializers.EmailField()
     
     def validate_email(self, email):
+        """
+        Проверяет, что указанный email соответствует существующему пользователю.
+        Если пользователь не существует, выбрасывает исключение ValidationError.
+        """
         try:
             user = CustomUser.objects.get(email=email)
         except CustomUser.DoesNotExist:
@@ -22,6 +26,13 @@ class AddUserToTeamSerializer(serializers.Serializer):
         return email
     
     def add_user(self, team, email):
+        """
+        Добавляет пользователя в указанную команду, если он еще не состоит в другой.
+
+        Если пользователь уже состоит в команде, выбрасывает исключение ValidationError.
+        В противном случае, назначает пользователя в указанную команду и сохраняет изменения.
+        """
+
         user = CustomUser.objects.get(email=email)
         if user.team:
             raise serializers.ValidationError("Пользователь уже в команде")
