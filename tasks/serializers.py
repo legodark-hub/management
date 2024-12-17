@@ -30,6 +30,10 @@ class TaskSerializer(serializers.ModelSerializer):
         read_only_fields = ["created_by" ,"created_at", "updated_at"]
         
         def validate_deadline(self, value):
+            """
+            Проверяет, что дедлайн не установлен в прошлом.
+            Если дедлайн установлен в прошлом, выбрасывает исключение ValidationError.
+            """
             if value < timezone.now():
                 raise serializers.ValidationError("Дедлайн не может быть в прошлом")
             return value

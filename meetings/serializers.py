@@ -29,13 +29,21 @@ class MeetingSerializer(serializers.ModelSerializer):
         read_only_fields = ["created_by", "created_at", "updated_at"]
 
     def validate_scheduled_at(self, value):
+        """
+        Проверяет, что запланированная встреча не в прошлом. Иначе выбрасывает исключение ValidationError.
+        """
         if value < timezone.now():
             raise serializers.ValidationError(
                 "Встреча не может быть запланирована в прошлом."
             )
         return value
 
-    def validate(self, data):
+    def validate(self, data):        
+        """
+        Проверяет, что запланированное время встречи не пересекается с другим событием
+        для каждого участника. Если участник уже занят в это время, выбрасывает исключение ValidationError.
+        """
+
         participants = self.initial_data.get("participants", [])
         for participant_id in participants:
             participant = CustomUser.objects.get(id=participant_id)

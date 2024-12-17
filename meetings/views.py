@@ -11,6 +11,11 @@ class MeetingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
+        """
+        Перед созданием объекта встречи проверяет, что текущий пользователь является менеджером и
+        что все участники встречи из одной команды. Если не так, то выбрасывает исключение PermissionDenied.
+        """
+        
         if self.request.user.role != "manager":
             raise PermissionDenied("Вы не являетесь менеджером")
         participants = serializer.validated_data.get("participants")
@@ -22,6 +27,13 @@ class MeetingViewSet(viewsets.ModelViewSet):
         serializer.save(created_by=self.request.user)
 
     def get_queryset(self):
+        """
+        Возвращает набор запросов встреч в зависимости от роли пользователя.
+
+        Если пользователь — менеджер, возвращаются встречи, созданные им.
+        Если пользователь — сотрудник, возвращаются встречи, на которые он назначен.
+        В противном случае возвращается пустой набор запросов.
+        """
         user = self.request.user
         if user.role == "manager":
             return Meeting.objects.filter(created_by=user)
@@ -30,12 +42,20 @@ class MeetingViewSet(viewsets.ModelViewSet):
         return Meeting.objects.none()
 
     def perform_update(self, serializer):
+        """
+        Перед обновлением объекта встречи проверяет, что текущий пользователь является
+        создателем этой встречи. Если не так, то выбрасывает исключение PermissionDenied.
+        """
         meeting = self.get_object()
         if self.request.user != meeting.created_by:
             raise PermissionDenied("Вы не можете редактировать данную встречу")
         serializer.save()
 
     def perform_destroy(self, instance):
+        """
+        Перед удалением объекта встречи проверяет, что текущий пользователь является
+        создателем этой встречи. Если не так, то выбрасывает исключение PermissionDenied.
+        """
         if self.request.user != instance.created_by:
             raise PermissionDenied("Вы не можете удалить данную встречу")
         instance.delete()

@@ -37,23 +37,37 @@ class SchedulerEventSerializer(serializers.ModelSerializer):
         ]
 
     def get_task(self, obj):
-        if obj.event_type == 'task':
+        """
+        Возвращает словарь с id, title, description и deadline, если тип события 'task'
+        """
+        if obj.event_type == "task":
             task = Task.objects.filter(id=obj.event_id).first()
-            return {
-                "id": task.id,
-                "title": task.title,
-                "description": task.description,
-                "deadline": task.deadline
-            } if task else None
+            return (
+                {
+                    "id": task.id,
+                    "title": task.title,
+                    "description": task.description,
+                    "deadline": task.deadline,
+                }
+                if task
+                else None
+            )
         return None
 
     def get_meeting(self, obj):
-        if obj.event_type == 'meeting':
+        """
+        Возвращает словарь с id, title, description и scheduled_at, если тип события 'meeting'
+        """
+        if obj.event_type == "meeting":
             meeting = Meeting.objects.filter(id=obj.event_id).first()
-            return {
-                "id": meeting.id,
-                "title": meeting.title,
-                "description": meeting.description,
-                "scheduled_at": meeting.scheduled_at
-            } if meeting else None
+            return (
+                {
+                    "id": meeting.id,
+                    "title": meeting.title,
+                    "description": meeting.description,
+                    "scheduled_at": meeting.scheduled_at,
+                }
+                if meeting
+                else None
+            )
         return None
