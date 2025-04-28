@@ -1,4 +1,3 @@
-from django.utils import timezone
 from rest_framework import serializers
 
 from tasks.models import Task
@@ -28,8 +27,3 @@ class TaskSerializer(serializers.ModelSerializer):
             "assigned_to_username",
         ]
         read_only_fields = ["created_by" ,"created_at", "updated_at"]
-        
-        def validate_deadline(self, value):
-            if value < timezone.now():
-                raise serializers.ValidationError("Дедлайн не может быть в прошлом")
-            return value
