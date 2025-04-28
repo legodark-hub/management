@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'tasks',
     'scheduler',
     'motivation',
-    'meetings',
 ]
 
 MIDDLEWARE = [

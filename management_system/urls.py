@@ -24,5 +24,4 @@ urlpatterns = [
     path('api/', include('tasks.urls')),
     path('api/', include('scheduler.urls')),
     path('api/', include('motivation.urls')),
-    path('api/', include('meetings.urls')),
 ]
