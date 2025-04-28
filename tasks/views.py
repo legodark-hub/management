@@ -17,7 +17,7 @@ class TasksViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("Вы не являетесь менеджером")
 
         assigned_to = serializer.validated_data.get("assigned_to")
-        if assigned_to.team.admin != self.request.user:
+        if assigned_to.team != self.request.user.team:
             raise PermissionDenied(
                 "Вы не можете назначить данную задачу участнику другой команды"
             )
