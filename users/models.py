@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from teams.models import Team
-
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -11,7 +9,7 @@ class CustomUser(AbstractUser):
         max_length=50,
         choices=[("admin", "Admin"), ("manager", "Manager"), ("employee", "Employee")],
     )
-    team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name="members")
+    team = models.CharField(max_length=50, null=True)
     
     REQUIRED_FIELDS = ["email"]
     
