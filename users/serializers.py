@@ -13,20 +13,12 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         fields = ["id", "username", "email", "password", "invitation_code"]
 
     def validate_invitation_code(self, value):
-        """
-        Проверяет, что указанный код приглашения соответствует существующей команде.
-        Если команда не существует, выбрасывает исключение ValidationError.
-        """
+        print(f"VALIDATION {value}")
         if not Team.objects.filter(invitation_code=value).exists():
             raise serializers.ValidationError("Неверный код приглашения")
         return value
 
     def validate(self, attrs):
-        """
-        Если пользователь передал код приглашения, то он
-        добаляется в словарь validated_data. Если код приглашения
-        не существует, выбрасывает исключение ValidationError.
-        """
         invitation_code = attrs.pop("invitation_code", None)
         if invitation_code:
             if not Team.objects.filter(invitation_code=invitation_code).exists():
@@ -49,10 +41,6 @@ class RoleChangeSerializer(serializers.ModelSerializer):
         fields = ["role"]
         
     def validate_role(self, value):
-        """
-        Проверяет, что указанная роль является корректной.
-        Если роль не является корректной, выбрасывает исключение ValidationError.
-        """
         if value not in ["manager", "employee"]:
             raise serializers.ValidationError("Неправильная роль")
         return value

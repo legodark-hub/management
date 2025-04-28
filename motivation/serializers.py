@@ -25,28 +25,16 @@ class TaskEvaluationSerializer(serializers.ModelSerializer):
         read_only_fields = ['evaluator', 'created_at', 'score']
         
         def validate_timeliness(self, value):
-            """
-            Проверяет, что оценка времени выполнения задания находится в диапазоне от 1 до 10.
-            Если оценка не входит в этот диапазон, выбрасывает исключение ValidationError.
-            """
             if value < 1 or value > 10:
                 raise serializers.ValidationError("Timeliness must be between 1 and 10")
             return value
         
         def validate_quality(self, value):
-            """
-            Проверяет, что оценка качества выполнения задания находится в диапазоне от 1 до 10.
-            Если оценка не входит в этот диапазон, выбрасывает исключение ValidationError.
-            """
             if value < 1 or value > 10:
                 raise serializers.ValidationError("Quality must be between 1 and 10")
             return value
         
         def validate_completeness(self, value):
-            """
-            Проверяет, что оценка полноты выполнения задания находится в диапазоне от 1 до 10.
-            Если оценка не входит в этот диапазон, выбрасывает исключение ValidationError.
-            """
             if value < 1 or value > 10:
                 raise serializers.ValidationError("Completeness must be between 1 and 10")
             return value
