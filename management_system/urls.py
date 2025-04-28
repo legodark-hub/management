@@ -14,40 +14,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
 from django.contrib import admin
 from django.urls import include, path
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularRedocView,
-    SpectacularSwaggerView,
-)
-
-docs_url = [
-    path("", SpectacularAPIView.as_view(), name="schema"),
-    path(
-        "swagger-ui/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger-ui",
-    ),
-    path(
-        "redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc",
-    ),
-]
 
 api_urls = [
-    path("users/", include("users.urls")),
-    path("teams/", include("teams.urls")),
-    path("tasks/", include("tasks.urls")),
-    path("scheduler/", include("scheduler.urls")),
-    path("evaluations/", include("motivation.urls")),
-    path("meetings/", include("meetings.urls")),
-    path("schema/", include(docs_url)),
+    path('users/', include('users.urls')),
+    path('teams/', include('teams.urls')),
+    path('tasks/', include('tasks.urls')),
+    path('scheduler/', include('scheduler.urls')),
+    path('evaluations/', include('motivation.urls')),
+    path('meetings/', include('meetings.urls')),
 ]
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/", include(api_urls)),
+    path('admin/', admin.site.urls),
+    path('api/', include(api_urls)),
 ]
