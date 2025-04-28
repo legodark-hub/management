@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from datetime import timedelta
 from pathlib import Path
 
 from decouple import config
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
     'users',
     'teams',
     'tasks',
-    'scheduler',
 ]
 
 MIDDLEWARE = [
@@ -130,7 +128,6 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     # "USER_CREATE_PASSWORD_RETYPE": True,
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "LOGIN_FIELD": "username",
     "SERIALIZERS": {
         "user_create": "users.serializers.CustomUserCreateSerializer",
